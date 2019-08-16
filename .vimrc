@@ -3,13 +3,28 @@ set number
 set relativenumber
 set ruler
 set linebreak
+set hlsearch
 autocmd FileType apache setlocal commentstring=#\ %s
+
+" Configure vim's default file browser
+" let g:netrw_banner = 0
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 4
+" let g:netrw_altv = 1
+" let g:netrw_winsize = 25
+" augroup ProjectDrawer
+  " autocmd!
+  " autocmd VimEnter * : :Vexplore
+" augroup END
 
 " Mappings for NERDTree
 autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 map <C-n> :NERDTreeToggle<CR>
-
+let NERDTreeQuitOnOpen = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDTreeShowHidden = 1
 
 " Disable arrow keys
 map <Down> <NOP>
@@ -36,7 +51,6 @@ set rtp+=~/.fzf
 nnoremap <C-p> :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>h :History<CR>
-
 
 set smartindent
 inoremap {<cr> {<cr>}<c-o><s-o>
@@ -75,10 +89,10 @@ call vundle#end()            " required
 
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 call plug#end()
-
 
 filetype plugin indent on    " required
 
@@ -93,12 +107,3 @@ endif
 colorscheme rigel
 " Spell-check set to F6
 " map <F6> :setlocal spell! spelllang=en_us<CR>
-
-
-
-
-
-
-
-
-
