@@ -107,8 +107,9 @@ SPACESHIP_TIME_SHOW=true
 #
 # Example aliases
 alias zshconf="vim ~/.zshrc"
-alias zshs="source ~/.zshrc"
 alias vimconf="vim ~/.vimrc"
+alias szsh="source ~/.zshrc"
+alias svim="source ~/.vimrc"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias c="code ."
 alias ll="ls -1a --group-directories-first"
