@@ -1,52 +1,44 @@
-" Keep 1000 items in the history
-set history=500
-" show incomplete commands
-set showcmd
-" show a menu when using tab completion
-set wildmenu
-set scrolloff=5
 syntax enable
 set number
 set relativenumber
-" show the cursor position
 set ruler
-set incsearch
 set linebreak
+set incsearch
+set hlsearch
 autocmd FileType apache setlocal commentstring=#\ %s
 
-" Instead of failing a command because of unsaved changes, instead raise a
-" dialogue asking if you wish to save changed files.
-set confirm
+:autocmd InsertEnter,InsertLeave * set cul!
 
-" Use visual bell instead of beeping when doing something wrong
-set visualbell
-
-
-" Search down into subfolders
-" Provides tab-complettion for all file-related tasks
-" set path+=**
+" Configure vim's default file browser
+" let g:netrw_banner = 0
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 4
+" let g:netrw_altv = 1
+" let g:netrw_winsize = 25
+" augroup ProjectDrawer
+  " autocmd!
+  " autocmd VimEnter * : :Vexplore
+" augroup END
 
 " Mappings for NERDTree
 autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 map <C-n> :NERDTreeToggle<CR>
+let NERDTreeQuitOnOpen = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDTreeShowHidden = 1
 
-" Copied text from vim can be pasted by CTRL+V and
-" copied text from CTRL+C can be pasted into vim with 'p'
-set clipboard=unnamed
-set clipboard=unnamedplus
-" shows $ sign at the end of each line and shows ^I instead of tabs
-" set list
-" add date into text file
-nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
-imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+" Move visual selection
+vnoremap J :m '>+1<cr>gv=gv
+vnoremap K :m '<-2<cr>gv=gv
 
 " Disable arrow keys
 map <Down> <NOP>
 map <Up> <NOP>
 map <Left> <NOP>
 map <Right> <NOP>
-inore jj <Esc> 
+inore jj <Esc>
 " Operate on an entire file
 onoremap af :<C-u>normal! ggVG<CR>
 
@@ -67,7 +59,6 @@ nnoremap <C-p> :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>h :History<CR>
 
-
 set smartindent
 inoremap {<cr> {<cr>}<c-o><s-o>
 inoremap [<cr> [<cr>]<c-o><s-o>
@@ -80,7 +71,7 @@ set softtabstop=2
 set autoindent
 set expandtab
 set shiftwidth=2
-set cursorline
+" set cursorline
 set showmatch
 let python_highlight_all = 1
 set nocompatible "required
@@ -99,25 +90,25 @@ Plugin 'SirVer/ultisnips'
 Plugin 'mlaursen/vim-react-snippets'
 Plugin 'wakatime/vim-wakatime'
 Plugin 'Rigellute/rigel'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'majutsushi/tagbar'
 Plugin 'vim-airline/vim-airline'
+Plugin 'dracula/vim'
+Plugin 'flrnprz/candid.vim'
 " Plugin 'vim-airline/vim-airline-themes'
 call vundle#end()            " required
 
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-" post install (yarn install | npm install)
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'drewtempelmeyer/palenight.vim'
 call plug#end()
-
 
 filetype plugin indent on    " required
 
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+set incsearch
+set background=dark
 """"" enable 24bit true color
 if (has("termguicolors"))
   set termguicolors
@@ -127,12 +118,3 @@ endif
 colorscheme rigel
 " Spell-check set to F6
 " map <F6> :setlocal spell! spelllang=en_us<CR>
-
-
-
-
-
-
-
-
-
