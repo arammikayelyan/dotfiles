@@ -74,7 +74,6 @@ plugins=(
   z
   zsh-autosuggestions
   zsh-syntax-highlighting
-  sudo
   ubuntu
 )
 
@@ -91,11 +90,11 @@ SPACESHIP_TIME_SHOW=true
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='mvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -106,19 +105,30 @@ SPACESHIP_TIME_SHOW=true
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias zshconf="vim ~/.zshrc"
-alias vimconf="vim ~/.vimrc"
+alias zshc="vim ~/.zshrc"
+alias vimc="vim ~/.vimrc"
 alias szsh="source ~/.zshrc"
 alias svim="source ~/.vimrc"
+alias dev="cd ~/Documents/Projects"
+alias books="cd ~/Documents/Books"
+alias down="cd ~/Downloads"
+alias docs="cd ~/Documents"
 alias ohmyzsh="vim ~/.oh-my-zsh"
-alias c="code ."
+alias cc="code ."
+alias c="code"
 alias ll="ls -1a --group-directories-first"
 alias lc="colorls -lA --sd"
 alias psmem="ps axch -o cmd:15,%mem --sort=-%mem | head"
 alias pscpu="ps axch -o cmd:15,%cpu --sort=-%cpu | head"
+alias freemem="free -h | awk '/^Mem:/ {print $3 "/" $2}'"
+alias open="xdg-open"
+
+function .. {
+  builtin cd ../ "$@" && ls --group-directories-first
+}
 
 function cd {
-  builtin cd "$@" && lc --group-directories-first
+  builtin cd "$@" && ls --group-directories-first
 }
 
 export NVM_DIR="$HOME/.nvm"
@@ -127,8 +137,12 @@ export NVM_DIR="$HOME/.nvm"
 
 # fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-source $(dirname $(gem which colorls))/tab_complete.sh
-# export PATH='$PATH:/opt/mssql-tools/bin'
 # export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'
+export FZF_DEFAULT_OPS='--extended'
+
+# source $(dirname $(gem which colorls))/tab_complete.sh
+# export PATH='$PATH:/opt/mssql-tools/bin'
 export PATH=$PATH:/usr/local/go/bin
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+export PATH=/home/aram/.rbenv/shims:/home/aram/.rbenv/bin:/home/aram/.nvm/versions/node/v13.3.0/bin:/home/aram/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/bin:/usr/local/go/bin:/home/aram/.fzf/bin:/usr/local/go/bin:~/.local/bin
