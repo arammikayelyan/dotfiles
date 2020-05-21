@@ -1,72 +1,59 @@
-" Plugins {{{
-
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-" Plugin 'arcticicestudio/nord-vim'
-" Plugin 'jacoborus/tender.vim' " Theme
-" Plugin 'flrnprz/candid.vim' " Theme
-" Plugin 'morhetz/gruvbox' " Theme
-Plugin 'Rigellute/rigel' " Theme
-Plugin 'sheerun/vim-polyglot' " Syntax highlighting
-" Plugin 'w0rp/ale'
-Plugin 'SirVer/ultisnips' " Snippets
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'ervandew/supertab'
-" Plugin 'mlaursen/vim-react-snippets' " Snippets
-Plugin 'wakatime/vim-wakatime'
-Plugin 'vim-airline/vim-airline'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'fatih/vim-go', { 'do': 'GoInstallBinaries' }
-Plugin 'junegunn/limelight.vim'
-Plugin 'junegunn/goyo.vim'
-Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plugin 'junegunn/fzf.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'greymd/oscyank.vim'
-Plugin 'tomtom/tcomment_vim' " Commenting
-Plugin 'wincent/scalpel' " Multiple cursors
-Plugin 'tpope/vim-fugitive'
-Plugin 'unblevable/quick-scope'
-" Plugin 'dyng/ctrlsf.vim' search and change an instance in whole project
-" nmap leader>a :CtrlSF -R ""<Left>
-" nmap <leader>A <Plug>CtrlSFCwordPath -W<CR>
-" nmap <leader>c :CtrlSFFocus<CR>
-" nmap <leader>C :CtrlSFToggle<CR>
+  Plugin 'gmarik/Vundle.vim'
+  Plugin 'Rigellute/rigel' " Theme
+  Plugin 'haishanh/night-owl.vim' " Theme
+  Plugin 'sheerun/vim-polyglot' " Syntax highlighting
+  Plugin 'wellle/targets.vim' " Adds various text objects
+  Plugin 'SirVer/ultisnips' " Snippets
+  Plugin 'ycm-core/YouCompleteMe'
+  " Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+  Plugin 'ervandew/supertab'
+  Plugin 'wakatime/vim-wakatime'
+  Plugin 'vim-airline/vim-airline'
+  Plugin 'jiangmiao/auto-pairs'
+  Plugin 'fatih/vim-go'
+  Plugin 'junegunn/limelight.vim'
+  Plugin 'junegunn/goyo.vim'
+  Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+  Plugin 'Xuyuanp/nerdtree-git-plugin'
+  Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plugin 'junegunn/fzf.vim'
+  Plugin 'tpope/vim-surround'
+  Plugin 'AndrewRadev/splitjoin.vim'
+  Plugin 'ryanoasis/vim-devicons'
+  Plugin 'greymd/oscyank.vim'
+  Plugin 'tomtom/tcomment_vim' " Commenting
+  Plugin 'wincent/scalpel' " Multiple cursors
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'unblevable/quick-scope'
+  " Plugin 'dyng/ctrlsf.vim' search and change an instance in whole project
+  " nmap leader>a :CtrlSF -R ""<Left>
+  " nmap <leader>A <Plug>CtrlSFCwordPath -W<CR>
+  " nmap <leader>c :CtrlSFFocus<CR>
+  " nmap <leader>C :CtrlSFToggle<CR>
 call vundle#end()            " required
-
-" }}}
-
-" Tabs And Spaces {{{
 
 set ts=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
-
-" }}}
-
-" Section Folding {{{
-
 set foldenable
 set foldlevelstart=10
 set foldnestmax=10
 set foldmethod=syntax
+" Search down into the folders
+" Provides tab-completion for all-related tasks
+set path+=**
 nnoremap <leader>f za
-
-" }}}
 " vim:foldmethod=marker:foldlevel=0
 
 syntax enable
 filetype plugin indent on    " required
-set number
+set number relativenumber
+set wildmenu
 set smartindent
-set relativenumber
 set ruler
 set linebreak
 set incsearch
@@ -85,6 +72,8 @@ set encoding=UTF-8
 set bs=indent,eol,start " allow backspacing over everything
 set noswapfile
 set colorcolumn=80
+set iskeyword&
+" set spell spelllang=en_us,AM
 
 " Map leader key
 let mapleader = " "
@@ -95,6 +84,8 @@ nnoremap <silent> <leader>q :q<CR>
 command! Qall qall 
 command! QA qall 
 command! E e
+" delete all but current bufer
+command! BufOnly execute '%bdelete|edit #|normal `"' 
 " Execute macro in q
 map Q @q
 
@@ -123,7 +114,8 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'default'
 
-
+"Coc configs
+autocmd FileType json syntax match Comment +\/\/.\+$+
 " Configure vim's default file browser
 " let g:netrw_banner = 0
 " let g:netrw_liststyle = 3
@@ -180,16 +172,25 @@ autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 autocmd FileType go nmap <leader>t  <Plug>(go-test)
 autocmd FileType go nmap <leader>i  <Plug>(go-info)
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+" Alternate
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+
 au BufRead,BufNewFile *.gohtml set filetype=gohtmltmpl " Syntax highlighting for .gohtml
 
 " Configs for vim-go plugin
 let g:go_fmt_command = "goimports" " automatically import
+let g:go_fmt_fail_silently = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
 let g:go_highlight_functions = 1
+let g:go_highlight_build_constraints = 1
 
 " Toggle last search highlight
 nnoremap <F3> :set hlsearch!<CR>
@@ -211,7 +212,8 @@ let g:ale_fix_on_save = 1 "Fix files automatically on save
 " FZF installed using git
 set rtp+=~/.fzf
 nnoremap <C-p> :Files<CR>
-nnoremap <Leader>B :Buffers<CR>
+nnoremap <C-l> :GFiles<CR>
+nnoremap <Leader>'b :Buffers<CR>
 nnoremap <Leader>h :History<CR>
 nnoremap <Leader>H :History:<CR>
 inoremap {<cr> {<cr>}<c-o><s-o>
@@ -253,9 +255,9 @@ if !exists("g:UltiSnipsJumpBackwardTrigger")
   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 endif
 
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
-
+" au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+" au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
+"
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " Trigger a highlight only when pressing f and F.
