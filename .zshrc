@@ -93,7 +93,7 @@ SPACESHIP_TIME_SHOW=true
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='mvim'
+  export EDITOR='vim'
 fi
 
 # Compilation flags
@@ -105,30 +105,51 @@ fi
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias zshc="vim ~/.zshrc"
-alias vimc="vim ~/.vimrc"
-alias szsh="source ~/.zshrc"
-alias svim="source ~/.vimrc"
-alias dev="cd ~/Documents/Projects"
-alias books="cd ~/Documents/Books"
+alias zc="$EDITOR $HOME/.zshrc"
+alias vc="$EDITOR $HOME/.vimrc"
+alias sc="source $HOME/.zshrc"
+alias dev="cd ~/Projects"
+alias books="cd ~/Books"
+alias prog="cd ~/Books/Programming"
+alias psy="cd ~/Books/Psychology"
 alias down="cd ~/Downloads"
 alias docs="cd ~/Documents"
+alias vid="cd ~/Videos"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias cc="code ."
 alias c="code"
-alias ll="ls -1a --group-directories-first"
+# alias ll="ls -1a --group-directories-first"
 alias lc="colorls -lA --sd"
 alias psmem="ps axch -o cmd:15,%mem --sort=-%mem | head"
 alias pscpu="ps axch -o cmd:15,%cpu --sort=-%cpu | head"
 alias freemem="free -h | awk '/^Mem:/ {print $3 "/" $2}'"
 alias open="xdg-open"
+alias mv='mv -i'
+alias rm='rm -i'
+# Suffix alias
+alias -s { md,txt,go }=vim
+
+function go_test {
+
+  go test $* | sed ''/PASS/s//$(printf "\033[32mPASS\033[0m")/'' | sed ''/SKIP/s//$(printf "\033[34mSKIP\033[0m")/'' | sed ''/FAIL/s//$(printf "\033[31mFAIL\033[0m")/'' | sed ''/FAIL/s//$(printf "\033[31mFAIL\033[0m")/'' | GREP_COLOR="01;33" egrep --color=always '\s*[a-zA-Z0-9\-_.]+[:][0-9]+[:]|^'
+
+}
 
 function .. {
-  builtin cd ../ "$@" && ls --group-directories-first
+  builtin cd ../ "$@" && ll
 }
 
 function cd {
-  builtin cd "$@" && ls --group-directories-first
+  builtin cd "$@" && ll
+}
+
+function mcd {
+  mkdir -p "$1"
+  cd "$1"
+}
+
+function rmd {
+  rm -rf "$1"
 }
 
 export NVM_DIR="$HOME/.nvm"
@@ -140,9 +161,8 @@ export NVM_DIR="$HOME/.nvm"
 # export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'
 export FZF_DEFAULT_OPS='--extended'
 
-# source $(dirname $(gem which colorls))/tab_complete.sh
-# export PATH='$PATH:/opt/mssql-tools/bin'
-export PATH=$PATH:/usr/local/go/bin
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH=/home/aram/.rbenv/shims:/home/aram/.rbenv/bin:/home/aram/.nvm/versions/node/v13.3.0/bin:/home/aram/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/bin:/usr/local/go/bin:/home/aram/.fzf/bin:/usr/local/go/bin:~/.local/bin
+export PATH=/home/aram/.nvm/versions/node/v13.3.0/bin:/home/aram/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/bin:/usr/local/go/bin:/home/aram/.fzf/bin:/usr/local/go/bin:~/.local/bin
+
+export DENO_INSTALL="/home/aram/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+fpath+=${ZDOTDIR:-~}/.zsh_functions
