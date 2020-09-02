@@ -73,7 +73,10 @@ set bs=indent,eol,start " allow backspacing over everything
 set noswapfile
 set colorcolumn=80
 set iskeyword&
-" set spell spelllang=en_us,AM
+" from mastering vim quickly
+set showcmd
+set autoread
+set hidden
 
 " Map leader key
 let mapleader = " "
