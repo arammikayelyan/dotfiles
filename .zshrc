@@ -1,22 +1,17 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH="/home/aram/.oh-my-zsh"
+
 ZSH_THEME="spaceship"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
-# COMPLETION_WAITING_DOTS="true"
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
+COMPLETION_WAITING_DOTS="true"
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="dd.mm.yyyy"
 
-plugins=(
-  git
-  z
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  ubuntu
-)
+plugins=(git z zsh-autosuggestions zsh-syntax-highlighting ubuntu)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -25,17 +20,21 @@ SPACESHIP_TIME_SHOW=true
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+  export EDITOR='nvim'
 else
-  export EDITOR='vim'
+  export EDITOR='nvim'
 fi
+
+function mcd {
+  mkdir -p $1 && cd $_
+}
 
 # ALIASES
 alias dotfiles="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"
 alias zc="$EDITOR $HOME/.zshrc"
-alias vc="$EDITOR $HOME/.vimrc"
+alias vc="$EDITOR $HOME/.config/nvim/init.vim"
 alias sc="source $HOME/.zshrc"
-alias cls="clear"
+alias cl="clear"
 alias dev="cd ~/Projects"
 alias books="cd ~/Books"
 alias prog="cd ~/Books/Programming"
@@ -46,14 +45,10 @@ alias vid="cd ~/Videos"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias cc="code ."
 alias c="code"
-# alias ll="ls -1a --group-directories-first"
-alias lc="colorls -lA --sd"
 alias psmem="ps axch -o cmd:15,%mem --sort=-%mem | head"
 alias pscpu="ps axch -o cmd:15,%cpu --sort=-%cpu | head"
 alias freemem="free -h | awk '/^Mem:/ {print $3 "/" $2}'"
 alias open="xdg-open"
-alias mv='mv -i'
-alias rm='rm -i'
 # Suffix alias
 alias -s { md,txt,go }=vim
 
@@ -101,9 +96,9 @@ export NVM_DIR="$HOME/.nvm"
 
 # fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'
+export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'
 export FZF_DEFAULT_OPS='--extended'
 
-export PATH=/home/aram/.nvm/versions/node/v13.3.0/bin:/home/aram/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/bin:/usr/local/go/bin:/home/aram/.fzf/bin:/usr/local/go/bin:~/.local/bin
+if [[ $TERM == xterm  ]]; then TERM=xterm-256color; fi
 
-fpath+=${ZDOTDIR:-~}/.zsh_functions
+source "/home/aram/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
