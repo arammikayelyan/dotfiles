@@ -1,39 +1,28 @@
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" let Vundle manage Vundle, required
-  Plugin 'gmarik/Vundle.vim'
-  Plugin 'Rigellute/rigel' " Theme
-  Plugin 'haishanh/night-owl.vim' " Theme
-  Plugin 'sheerun/vim-polyglot' " Syntax highlighting
-  Plugin 'wellle/targets.vim' " Adds various text objects
-  Plugin 'SirVer/ultisnips' " Snippets
-  Plugin 'ycm-core/YouCompleteMe'
-  " Plugin 'neoclide/coc.nvim', {'branch': 'release'}
-  Plugin 'ervandew/supertab'
-  Plugin 'wakatime/vim-wakatime'
-  Plugin 'vim-airline/vim-airline'
-  Plugin 'jiangmiao/auto-pairs'
-  Plugin 'fatih/vim-go'
-  Plugin 'junegunn/limelight.vim'
-  Plugin 'junegunn/goyo.vim'
-  Plugin 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-  Plugin 'Xuyuanp/nerdtree-git-plugin'
-  Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-  Plugin 'junegunn/fzf.vim'
-  Plugin 'tpope/vim-surround'
-  Plugin 'AndrewRadev/splitjoin.vim'
-  Plugin 'ryanoasis/vim-devicons'
-  Plugin 'greymd/oscyank.vim'
-  Plugin 'tomtom/tcomment_vim' " Commenting
-  Plugin 'wincent/scalpel' " Multiple cursors
-  Plugin 'tpope/vim-fugitive'
-  Plugin 'unblevable/quick-scope'
-  " Plugin 'dyng/ctrlsf.vim' search and change an instance in whole project
-  " nmap leader>a :CtrlSF -R ""<Left>
-  " nmap <leader>A <Plug>CtrlSFCwordPath -W<CR>
-  " nmap <leader>c :CtrlSFFocus<CR>
-  " nmap <leader>C :CtrlSFToggle<CR>
-call vundle#end()            " required
+call plug#begin()
+  Plug 'Rigellute/rigel' " Theme
+  Plug 'haishanh/night-owl.vim' " Theme
+  Plug 'sheerun/vim-polyglot' " Syntax highlighting
+  Plug 'wellle/targets.vim' " Adds various text objects
+  " Plug 'ycm-core/YouCompleteMe'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'lambdalisue/fern.vim'
+  Plug 'ervandew/supertab'
+  Plug 'wakatime/vim-wakatime'
+  Plug 'vim-airline/vim-airline'
+  Plug 'jiangmiao/auto-pairs'
+  Plug 'fatih/vim-go'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
+  Plug 'tpope/vim-surround'
+  Plug 'AndrewRadev/splitjoin.vim'
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'greymd/oscyank.vim'
+  Plug 'tomtom/tcomment_vim' " Commenting
+  Plug 'wincent/scalpel' " Multiple cursors
+  Plug 'tpope/vim-fugitive'
+  Plug 'unblevable/quick-scope'
+  Plug 'dense-analysis/ale'
+call plug#end()
 
 set ts=2
 set softtabstop=2
@@ -46,7 +35,7 @@ set foldmethod=syntax
 " Search down into the folders
 " Provides tab-completion for all-related tasks
 set path+=**
-nnoremap <leader>f za
+" nnoremap <leader>f za
 " vim:foldmethod=marker:foldlevel=0
 
 syntax enable
@@ -106,6 +95,71 @@ function! RenameFile()
 endfunction
 map <Leader>n :call RenameFile()<cr>
 
+function! DeleteAllBuffers()
+  let l:current_pos = getpos('.')
+  execute "%bd | e# | bd#"
+  call setpos('.', l:current_pos)
+endfunc
+
+nnoremap <silent> <Leader>bd :call DeleteAllBuffers()<CR>
+
+" .............................................................................
+" lambdalisue/fern.vim
+" .............................................................................
+
+" Disable netrw.
+let g:loaded_netrw  = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_netrwFileHandlers = 1
+
+augroup my-fern-hijack
+  autocmd!
+  autocmd BufEnter * ++nested call s:hijack_directory()
+augroup END
+
+function! s:hijack_directory() abort
+  let path = expand('%:p')
+  if !isdirectory(path)
+    return
+  endif
+  bwipeout %
+  execute printf('Fern %s', fnameescape(path))
+endfunction
+
+" Custom settings and mappings.
+let g:fern#disable_default_mappings = 1
+
+noremap <silent> <Leader>f :Fern . -drawer -reveal=% -toggle -width=35<CR><C-w>=
+
+function! FernInit() abort
+  nmap <buffer><expr>
+        \ <Plug>(fern-my-open-expand-collapse)
+        \ fern#smart#leaf(
+        \   "\<Plug>(fern-action-open:select)",
+        \   "\<Plug>(fern-action-expand)",
+        \   "\<Plug>(fern-action-collapse)",
+        \ )
+  nmap <buffer> <CR> <Plug>(fern-my-open-expand-collapse)
+  nmap <buffer> <2-LeftMouse> <Plug>(fern-my-open-expand-collapse)
+  nmap <buffer> n <Plug>(fern-action-new-path)
+  nmap <buffer> d <Plug>(fern-action-remove)
+  nmap <buffer> m <Plug>(fern-action-move)
+  nmap <buffer> M <Plug>(fern-action-rename)
+  nmap <buffer> h <Plug>(fern-action-hidden-toggle)
+  nmap <buffer> r <Plug>(fern-action-reload)
+  nmap <buffer> k <Plug>(fern-action-mark-toggle)
+  nmap <buffer> b <Plug>(fern-action-open:split)
+  nmap <buffer> v <Plug>(fern-action-open:vsplit)
+  nmap <buffer><nowait> < <Plug>(fern-action-leave)
+  nmap <buffer><nowait> > <Plug>(fern-action-enter)
+endfunction
+
+augroup FernGroup
+  autocmd!
+  autocmd FileType fern call FernInit()
+augroup END
+
 autocmd FileType apache setlocal commentstring=#\ %s
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -140,7 +194,7 @@ let NERDTreeDirArrows = 1
 let NERDTreeShowHidden = 1
 
 " Goyo plugin makes text more readable when writing prose
-map <leader>f :Goyo \| set linebreak <CR>
+" map <leader>f :Goyo \| set linebreak <CR>
 
 " Change cursor type
 autocmd InsertEnter,InsertLeave * set cul!
@@ -208,9 +262,12 @@ inore jj <Esc>
 onoremap af :<C-u>normal! ggVG<CR>
 
 "Navigate between eslint errors / ale
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> [c <Plug>(ale_previous_wrap)
+nmap <silent> ]c <Plug>(ale_next_wrap)
 let g:ale_fix_on_save = 1 "Fix files automatically on save
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '⚠️'
+nmap <F6> <Plug>(ale_fix)
 
 " FZF installed using git
 set rtp+=~/.fzf
@@ -265,6 +322,15 @@ cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " Trigger a highlight only when pressing f and F.
 let g:qs_highlight_on_keys = ['f', 'F']
+
+if &term =~ '256color'
+      " Disable Background Color Erase (BCE) so that color schemes
+      " work properly when Vim is used inside tmux and GNU screen
+          set t_ut=
+endif
+
+set t_Co=256
+
 
 colorscheme rigel
 """"" enable 24bit true color
