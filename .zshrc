@@ -15,6 +15,8 @@ plugins=(git z zsh-autosuggestions zsh-syntax-highlighting ubuntu)
 
 source $ZSH/oh-my-zsh.sh
 
+bindkey -s ^f "tmux-sessionizer\n"
+
 # User configuration
 SPACESHIP_TIME_SHOW=true 
 
@@ -25,13 +27,17 @@ else
   export EDITOR='nvim'
 fi
 
+h() {
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
+}
+
 # ALIASES
 alias dotfiles="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"
 alias zc="$EDITOR $HOME/.zshrc"
 alias vc="$EDITOR $HOME/.config/nvim/init.vim"
 alias sc="source $HOME/.zshrc"
 alias cl="clear"
-alias dev="cd ~/Projects"
+alias dev="cd ~/Development"
 alias books="cd ~/Books"
 alias prog="cd ~/Books/Programming"
 alias psy="cd ~/Books/Psychology"
@@ -47,6 +53,7 @@ alias freemem="free -h | awk '/^Mem:/ {print $3 "/" $2}'"
 alias open="xdg-open"
 # Suffix alias
 alias -s { md,txt,go }=vim
+alias l="exa --long --header"
 
 # TMUX
 alias tn="tmux new -s"
@@ -88,5 +95,8 @@ export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'
 export FZF_DEFAULT_OPS='--extended'
 
 if [[ $TERM == xterm  ]]; then TERM=xterm-256color; fi
+
+export PATH=$PATH:/usr/local/go/bin
+export PATH="$PATH:$(go env GOPATH)/bin"
 
 source "/home/aram/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
