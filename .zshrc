@@ -54,6 +54,9 @@ alias open="xdg-open"
 # Suffix alias
 alias -s { md,txt,go }=vim
 alias l="exa --long --header"
+alias la="exa --long --header --all"
+alias lag="exa --long --header --all --git"
+alias lt="exa --tree"
 
 # TMUX
 alias tn="tmux new -s"
