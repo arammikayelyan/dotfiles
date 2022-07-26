@@ -20,6 +20,8 @@ require('packer').startup(function()
     requires = 'neovim/nvim-lspconfig',
   }
 
+  use 'kdheepak/lazygit.nvim'
+
   -- BONUS: Customizations over LSP
   -- Show VSCode-esque pictograms
   use 'onsails/lspkind-nvim'
@@ -36,6 +38,13 @@ require('packer').startup(function()
       'hrsh7th/cmp-cmdline',
       'saadparwaiz1/cmp_luasnip'
     }
+  }
+
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup()
+    end
   }
 
   -- snippets

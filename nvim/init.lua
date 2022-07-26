@@ -11,4 +11,5 @@ require('aram.lspsaga')
 require('aram.telescope')
 require('aram.luasnip')
 require('aram.cmp')
+require('aram.gitsigns')
 

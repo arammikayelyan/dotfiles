@@ -57,6 +57,7 @@ keymap('n', '<space>fb', '<cmd>Telescope buffers<CR>', opts)
 keymap('n', '<space>fh', '<cmd>Telescope help_tags<CR>', opts)
 
 keymap('n', '<space>e', '<cmd>NvimTreeToggle<CR>', opts)
+keymap('n', '<space>gg', '<cmd>LazyGit<CR>', opts)
 
 --[[
 
