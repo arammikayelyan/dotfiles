@@ -1,13 +1,8 @@
 local cmp = require'cmp'
-
   cmp.setup({
     snippet = {
-      -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        require('luasnip').lsp_expand(args.body)
       end,
     },
     window = {
@@ -23,10 +18,7 @@ local cmp = require'cmp'
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
-      -- { name = 'luasnip' }, -- For luasnip users.
-      -- { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
+      { name = 'luasnip' },
     }, {
       { name = 'buffer' },
     })
@@ -41,28 +33,19 @@ local cmp = require'cmp'
     })
   })
 
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline('/', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-      { name = 'buffer' }
-    }
-  })
-
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
-
   -- Setup lspconfig.
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   require('lspconfig')['gopls'].setup {
+    on_attach = function()
+      vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer=0})
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
+      vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
+      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer=0})
+      vim.keymap.set("n", "<space>dj", vim.diagnostic.goto_next, {buffer=0})
+      vim.keymap.set("n", "<space>dk", vim.diagnostic.goto_prev, {buffer=0})
+      vim.keymap.set("n", "<space>dl", "<cmd>Telescope diagnostics<CR>", {buffer=0})
+      vim.keymap.set("n", "<space>r", vim.lsp.buf.rename, {buffer=0})
+    end,
     capabilities = capabilities
   }
   require('lspconfig')['tsserver'].setup {

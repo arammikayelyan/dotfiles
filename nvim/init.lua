@@ -12,4 +12,5 @@ require('aram.telescope')
 require('aram.luasnip')
 require('aram.cmp')
 require('aram.gitsigns')
-
+require('aram.nvimtree')
+require('aram.hop')

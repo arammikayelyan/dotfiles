@@ -81,9 +81,6 @@ require('packer').startup(function()
   use 'nvim-treesitter/nvim-treesitter'
 
   require'nvim-web-devicons'.setup {
-    -- your personnal icons can go here (to override)
-    -- you can specify color or cterm_color instead of specifying both of them
-    -- DevIcon will be appended to `name`
     override = {
      zsh = {
        icon = "",
@@ -92,10 +89,25 @@ require('packer').startup(function()
        name = "Zsh"
      }
     };
-    -- globally enable default icons (default to false)
-    -- will get overriden by `get_icons` option
     default = true;
     get_icons = true;
    }
   require'nvim-web-devicons'.get_icons()
+
+  -- debugging
+  use 'mfussenegger/nvim-dap'
+  use 'leoluz/nvim-dap-go'
+  use 'rcarriga/nvim-dap-ui'
+  use 'theHamsta/nvim-dap-virtual-text'
+  use 'nvim-telescope/telescope-dap.nvim'
+
+  use {
+    'phaazon/hop.nvim',
+    branch = 'v2', -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    end
+  }
+
 end)
