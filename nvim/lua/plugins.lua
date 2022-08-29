@@ -56,6 +56,7 @@ require('packer').startup(function()
   }
 
   use 'L3MON4D3/LuaSnip'
+  use "rafamadriz/friendly-snippets"
 
   -- bracket autocompletion
   use 'vim-scripts/auto-pairs-gentle'
