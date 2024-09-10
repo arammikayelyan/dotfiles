@@ -4,7 +4,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/home/aram/.oh-my-zsh"
 
-ZSH_THEME="spaceship"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
@@ -18,8 +17,6 @@ source $ZSH/oh-my-zsh.sh
 
 bindkey -s ^f "tmux-sessionizer\n"
 
-# User configuration
-SPACESHIP_TIME_SHOW=true 
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -98,9 +95,6 @@ export NVM_DIR="$HOME/.nvm"
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'
 export FZF_DEFAULT_OPS='--extended'
 
-if [[ $TERM == xterm  ]]; then TERM=xterm-256color; fi
-
 export PATH=$PATH:/usr/local/go/bin
 export PATH="$PATH:$(go env GOPATH)/bin"
 
-source "/home/aram/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
