@@ -1,6 +1,3 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 # Path to your oh-my-zsh installation.
 export ZSH="/home/aram/.oh-my-zsh"
 
@@ -10,10 +7,10 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="dd.mm.yyyy"
 
 plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
-
 source $ZSH/oh-my-zsh.sh
 
 bindkey -s ^f "tmux-sessionizer\n"
+bindkey -s ^r "rfv\n"
 # Bind Ctrl-n to accept the zsh-autosuggestions
 bindkey '^n' forward-word
 bindkey '^n' autosuggest-accept
@@ -22,6 +19,13 @@ bindkey '^n' autosuggest-accept
 h() {
   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
 }
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # ALIASES
 alias zc="$EDITOR $HOME/.zshrc"
@@ -94,6 +98,5 @@ export FZF_DEFAULT_OPS='--extended'
 
 # Go environment setup
 export PATH=$PATH:/usr/local/go/bin
-export PATH="$PATH:$(go env GOPATH)/bin"
 
 eval "$(starship init zsh)"
