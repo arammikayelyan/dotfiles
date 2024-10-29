@@ -5,7 +5,6 @@ local keymap = vim.keymap.set
 local opts = { noremap = true }
 
 keymap("n", "<leader>w", ":up<cr>", {})
-keymap("n", "<leader>q", ":q<cr>", {})
 keymap("n", "<F1>", "<cmd>so %<cr>", {})
 keymap("i", "jj", "<esc>", {})
 
@@ -13,8 +12,8 @@ keymap("n", "#", "#zzzv", { desc = "Search and center screen" })
 keymap("n", "*", "*zzzv", { desc = "Search and center screen" })
 keymap("n", "n", "nzzzv", opts)
 keymap("n", "N", "Nzzzv", opts)
-keymap("n", "{", "{zzzv", opts)
-keymap("n", "}", "}zzzv", opts)
+-- keymap("n", "{", "{zzzv", opts)
+-- keymap("n", "}", "}zzzv", opts)
 keymap("n", "J", "mzJ`z", opts)
 keymap("n", "Y", "y$", opts)
 keymap("n", "<space>a", "ggVG<c-$>", opts) -- Select all
@@ -24,7 +23,6 @@ keymap("n", "<leader>y", '"+y', opts)
 keymap("v", "<leader>y", '"+y', opts)
 keymap("n", "<leader>Y", '"+y', opts)
 
-keymap("n", "<leader>bd", "<cmd>%bd | e# | bd#<cr>", {})
 keymap("n", "gl", "$", opts) -- go to the end of the line
 keymap("n", "gh", "^", opts) -- go to the start of the line
 
@@ -78,3 +76,6 @@ keymap("n", "<leader>dU", [[<cmd>lua require'dapui'.toggle()<cr>]])
 
 -- keymap("n", "<leader>sl", vim.cmd.SidewaysLeft)
 -- keymap("n", "<leader>sr", vim.cmd.SidewaysRight)
+
+-- keymap("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
